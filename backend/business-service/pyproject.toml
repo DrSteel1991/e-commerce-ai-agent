@@ -1,0 +1,23 @@
+[project]
+name = "business-service"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "python-dotenv",
+]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+include = ["app"]
+extraPaths = [".venv/lib/python3.14/site-packages"]
+
+[tool.basedpyright]
+venvPath = "."
+venv = ".venv"
+include = ["app"]
+extraPaths = [".venv/lib/python3.14/site-packages"]
