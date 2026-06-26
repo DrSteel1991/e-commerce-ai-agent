@@ -22,7 +22,7 @@ def login(db: Session, email: str, password: str):
     if not user:
         raise InvalidCredentialsException()
 
-    if not verify_password(password, user.password_hash):
+    if not user.password_hash or not verify_password(password, user.password_hash):
         raise InvalidCredentialsException()
 
     token = create_access_token(
