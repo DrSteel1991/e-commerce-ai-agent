@@ -1,0 +1,10 @@
+{
+  "executionEnvironments": [
+    {
+      "root": "backend/auth-service",
+      "extraPaths": [
+        "backend/auth-service/.venv/lib/python3.14/site-packages"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/auth-service/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/backend/auth-service/.venv/lib/python3.14/site-packages"
+  ],
+  "basedpyright.analysis.diagnosticMode": "workspace",
+  "basedpyright.venvPath": "${workspaceFolder}/backend/auth-service",
+  "basedpyright.venv": ".venv",
+  "basedpyright.analysis.extraPaths": [
+    "${workspaceFolder}/backend/auth-service/.venv/lib/python3.14/site-packages"
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "ruff.path": ["${workspaceFolder}/backend/auth-service/.venv/bin/ruff"]
+}
