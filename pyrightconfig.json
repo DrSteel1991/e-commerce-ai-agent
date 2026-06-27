@@ -11,6 +11,12 @@
       "extraPaths": [
         "backend/business-service/.venv/lib/python3.14/site-packages"
       ]
+    },
+    {
+      "root": "backend/rag-service",
+      "extraPaths": [
+        "backend/rag-service/.venv/lib/python3.14/site-packages"
+      ]
     }
   ]
 }
