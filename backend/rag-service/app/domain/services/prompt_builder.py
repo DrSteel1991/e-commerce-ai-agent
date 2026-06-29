@@ -1,25 +1,35 @@
-def build_rag_prompt(question: str, chunks):
-    context = "\n\n".join(chunk.content for chunk in chunks)
+def build_rag_prompt(question: str, context_chunks: list) -> str:
+    context_text = "\n\n".join(
+        [
+            f"""
+SOURCE {index + 1}
+Filename: {chunk.filename}
+Chunk ID: {chunk.id}
+Content:
+{chunk.content}
+"""
+            for index, chunk in enumerate(context_chunks)
+        ]
+    )
 
     return f"""
-You are an AI customer support assistant.
+You are a helpful customer support assistant for an e-commerce platform.
 
-Answer the user's question ONLY using the provided context.
+Answer the user's question using the provided context.
 
-If the answer cannot be found in the context,
-say:
+Rules:
+- If the context contains relevant policy information, answer clearly using that information.
+- For vague questions like "Can I refund this?", explain the general refund/return policy from the context.
+- Combine information from multiple sources when helpful.
+- Only say "I don't have enough information to answer that." if the context is completely unrelated to the question.
+- Keep the answer short and customer-friendly.
+- Do not invent policies that are not in the context.
 
-"I don't have enough information to answer that."
+Context:
+{context_text}
 
-----------------------------
-Context
-
-{context}
-
-----------------------------
-Question
-
+User question:
 {question}
 
-Answer:
+Final answer:
 """

@@ -36,3 +36,13 @@ def create_document_chunk(
 
 def get_document_by_filename(db: Session, filename: str):
     return db.query(Document).filter(Document.filename == filename).first()
+
+
+def delete_document_by_filename(db: Session, filename: str) -> bool:
+    document = get_document_by_filename(db, filename)
+    if not document:
+        return False
+
+    db.delete(document)
+    db.commit()
+    return True

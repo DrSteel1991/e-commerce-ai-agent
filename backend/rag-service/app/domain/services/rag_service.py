@@ -4,10 +4,10 @@ from app.infrastructure.llm.openai_llm_client import generate_answer
 from sqlalchemy.orm import Session
 
 
-def answer_question(db: Session, question: str, limit: int = 3):
+def answer_question(db: Session, question: str, limit: int = 5):
     chunks = retrieve_context(db=db, question=question, limit=limit)
 
-    prompt = build_rag_prompt(question=question, chunks=chunks)
+    prompt = build_rag_prompt(question=question, context_chunks=chunks)
 
     answer = generate_answer(prompt)
 

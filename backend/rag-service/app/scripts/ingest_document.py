@@ -17,6 +17,7 @@ def main():
             file_path=str(pdf_path),
             filename="refund_policy.pdf",
             document_type="policy",
+            replace=True,
         )
 
         print(result)

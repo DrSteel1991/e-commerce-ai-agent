@@ -9,4 +9,4 @@ router = APIRouter(prefix="/rag", tags=["RAG"])
 
 @router.post("/ask", response_model=AskResponse)
 def ask_question(request: AskRequest, db: Session = Depends(get_db)):
-    return answer_question(db=db, question=request.question, limit=3)
+    return answer_question(db=db, question=request.question, limit=5)

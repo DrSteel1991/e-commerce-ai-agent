@@ -17,6 +17,18 @@
       "extraPaths": [
         "backend/rag-service/.venv/lib/python3.14/site-packages"
       ]
+    },
+    {
+      "root": "backend/api-gateway",
+      "extraPaths": [
+        "backend/api-gateway/.venv/lib/python3.14/site-packages"
+      ]
+    },
+    {
+      "root": "backend/agent-service",
+      "extraPaths": [
+        "backend/agent-service/.venv/lib/python3.14/site-packages"
+      ]
     }
   ]
 }

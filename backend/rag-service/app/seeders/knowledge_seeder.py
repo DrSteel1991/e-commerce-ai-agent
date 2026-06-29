@@ -25,6 +25,7 @@ def main():
                 file_path=str(pdf_path),
                 filename=pdf_path.name,
                 document_type="policy",
+                replace=True,
             )
 
             print(result)
