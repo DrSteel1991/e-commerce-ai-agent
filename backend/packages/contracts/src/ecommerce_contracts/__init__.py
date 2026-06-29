@@ -6,7 +6,13 @@ from ecommerce_contracts.internal import (
     internal_headers,
     require_internal_api_key,
 )
-from ecommerce_contracts.rag import AskRequest, AskResponse, SourceResponse
+from ecommerce_contracts.rag import (
+    AskRequest,
+    AskResponse,
+    ProductSearchRequest,
+    ProductSearchResponse,
+    SourceResponse,
+)
 
 __all__ = [
     "AskRequest",
@@ -17,6 +23,8 @@ __all__ = [
     "CurrentUserResponse",
     "INTERNAL_API_KEY_HEADER",
     "LoginRequest",
+    "ProductSearchRequest",
+    "ProductSearchResponse",
     "SourceResponse",
     "TokenResponse",
     "USER_ID_HEADER",

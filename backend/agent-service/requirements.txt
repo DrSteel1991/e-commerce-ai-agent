@@ -3,4 +3,6 @@ uvicorn
 python-dotenv
 pydantic
 httpx
--e ../packages/contracts
+openai
+langgraph
+-e file:../packages/contracts

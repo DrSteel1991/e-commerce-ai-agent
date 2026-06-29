@@ -10,4 +10,4 @@ openai
 pgvector
 langchain-text-splitters
 reportlab
--e ../packages/contracts
+-e file:../packages/contracts

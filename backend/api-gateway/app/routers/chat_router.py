@@ -31,7 +31,11 @@ async def chat(
             ) from exc
 
     try:
-        return await send_message_to_agent(message=request.message, user_id=user_id)
+        return await send_message_to_agent(
+            message=request.message,
+            user_id=user_id,
+            session_id=request.session_id,
+        )
     except httpx.HTTPStatusError as exc:
         detail = "Agent service error"
         try:
@@ -43,4 +47,9 @@ async def chat(
         raise HTTPException(
             status_code=503,
             detail="Agent service is unavailable",
+        ) from exc
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=str(exc),
         ) from exc

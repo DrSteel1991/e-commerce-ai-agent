@@ -36,3 +36,32 @@ async def ask_rag_service(question: str) -> dict:
 
     response.raise_for_status()
     return response.json()
+
+
+async def search_products_semantic(query: str, limit: int = 5) -> dict:
+    """Semantic product search via RAG embeddings."""
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                f"{RAG_SERVICE_URL}/rag/search-products",
+                json={"query": query, "limit": limit},
+                headers=internal_headers(),
+            )
+    except httpx.RequestError as exc:
+        raise ServiceUnavailableError(
+            "RAG service unavailable",
+            user_message=(
+                "I cannot search products right now. Please try again shortly."
+            ),
+        ) from exc
+
+    if response.status_code >= 500:
+        raise ServiceUnavailableError(
+            "RAG service error",
+            user_message=(
+                "I cannot search products right now. Please try again shortly."
+            ),
+        )
+
+    response.raise_for_status()
+    return response.json()

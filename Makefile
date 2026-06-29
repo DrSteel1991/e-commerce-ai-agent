@@ -1,6 +1,9 @@
-.PHONY: dev stop logs
+.PHONY: dev stop logs setup
 
-dev:
+setup:
+	./scripts/setup-dev-env.sh
+
+dev: setup
 	./scripts/dev-start.sh
 
 stop:

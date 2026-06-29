@@ -1,4 +1,5 @@
 from app.domain.services.product_service import (
+    list_all_products,
     list_low_stock_products,
     list_products_by_category,
     search_available_products,
@@ -9,6 +10,15 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/products", tags=["Products"])
+
+
+@router.get("", response_model=list[ProductResponse])
+def list_products(
+    limit: int = 20,
+    category: str | None = None,
+    db: Session = Depends(get_db),
+):
+    return list_all_products(db, limit, category)
 
 
 @router.get("/low-stock", response_model=list[ProductResponse])

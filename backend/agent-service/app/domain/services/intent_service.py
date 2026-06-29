@@ -1,12 +1,19 @@
 import re
 
 from app.domain.intents import Intent
+from app.domain.services.product_query import extract_product_search_query
 
 
 class IntentResult:
-    def __init__(self, intent: Intent, order_id: int | None = None):
+    def __init__(
+        self,
+        intent: Intent,
+        order_id: int | None = None,
+        search_query: str | None = None,
+    ):
         self.intent = intent
         self.order_id = order_id
+        self.search_query = search_query
 
 
 ORDER_KEYWORDS = [
@@ -71,6 +78,7 @@ PRODUCT_KEYWORDS = [
     "price of",
     "how much does",
     "do you sell",
+    "do you have",
 ]
 
 
@@ -79,20 +87,14 @@ def _contains_any(text: str, keywords: list[str]) -> bool:
 
 
 def _extract_order_id(message: str) -> int | None:
-    """Try to pull an order number out of messages like 'order 42' or 'order #42'."""
     match = re.search(r"order\s*#?\s*(\d+)", message, re.IGNORECASE)
     if match:
         return int(match.group(1))
     return None
 
 
-def detect_intent(message: str) -> IntentResult:
-    """
-    Decide what the user wants.
-
-    This is a simple keyword-based version for learning.
-    Later we can upgrade it to use OpenAI for smarter detection.
-    """
+def detect_intent_keywords(message: str) -> IntentResult:
+    """Keyword-based fallback when LLM intent detection is unavailable."""
     text = message.lower().strip()
     order_id = _extract_order_id(text)
 
@@ -112,6 +114,9 @@ def detect_intent(message: str) -> IntentResult:
         return IntentResult(intent=Intent.REFUND_POLICY)
 
     if _contains_any(text, PRODUCT_KEYWORDS):
-        return IntentResult(intent=Intent.PRODUCT_INFO)
+        return IntentResult(
+            intent=Intent.PRODUCT_INFO,
+            search_query=extract_product_search_query(message),
+        )
 
     return IntentResult(intent=Intent.GENERAL)

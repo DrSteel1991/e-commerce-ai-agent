@@ -9,8 +9,12 @@ _ = load_dotenv()
 AGENT_SERVICE_URL = os.environ.get("AGENT_SERVICE_URL", "http://localhost:8004")
 
 
-async def send_message_to_agent(message: str, user_id: str | None = None) -> dict:
-    payload = {"message": message}
+async def send_message_to_agent(
+    message: str,
+    user_id: str | None = None,
+    session_id: str | None = None,
+) -> dict:
+    payload = {"message": message, "session_id": session_id}
 
     async with httpx.AsyncClient(timeout=60.0) as client:
         response = await client.post(

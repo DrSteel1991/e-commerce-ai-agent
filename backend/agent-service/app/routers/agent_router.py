@@ -12,4 +12,8 @@ async def chat(
     _: None = Depends(require_internal_api_key),
     user_id: str | None = Header(None, alias=USER_ID_HEADER),
 ):
-    return await handle_message(message=request.message, user_id=user_id)
+    return await handle_message(
+        message=request.message,
+        user_id=user_id,
+        session_id=request.session_id,
+    )

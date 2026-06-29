@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LOG_DIR="$ROOT/logs"
 
+"$ROOT/scripts/setup-dev-env.sh"
+echo
+
 SERVICES=(
   "auth|backend/auth-service|8001"
   "business|backend/business-service|8003"
@@ -14,7 +17,7 @@ SERVICES=(
 
 mkdir -p "$LOG_DIR"
 
-  ensure_venv() {
+ensure_venv() {
   local service_dir="$1"
   local full_path="$ROOT/$service_dir"
 
@@ -24,8 +27,10 @@ mkdir -p "$LOG_DIR"
   fi
 
   echo "Installing dependencies for $service_dir..."
-  "$full_path/.venv/bin/pip" install -q -e "$ROOT/backend/packages/contracts"
-  "$full_path/.venv/bin/pip" install -q -r "$full_path/requirements.txt"
+  (
+    cd "$full_path"
+    .venv/bin/pip install -q -r requirements.txt
+  )
 }
 
 port_in_use() {

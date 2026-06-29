@@ -51,6 +51,10 @@ export function Chat({ isLoggedIn }: ChatProps) {
     try {
       const response = await sendChatMessage(trimmed);
 
+      if (response.session_id) {
+        localStorage.setItem("chat_session_id", response.session_id);
+      }
+
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",

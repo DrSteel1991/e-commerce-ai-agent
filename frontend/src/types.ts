@@ -22,6 +22,7 @@ export interface ChatResponse {
   agent_action?: string;
   intent?: string;
   user_id?: string | null;
+  session_id?: string | null;
   data?: Record<string, unknown>;
 }
 

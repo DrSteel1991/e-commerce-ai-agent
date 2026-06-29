@@ -1,21 +1,16 @@
+import os
+
 import httpx
+from dotenv import load_dotenv
 from ecommerce_contracts import internal_headers
 from ecommerce_contracts.errors import (
-    ServiceError,
     ServiceForbiddenError,
-    ServiceNotFoundError,
     ServiceUnavailableError,
 )
 
-import os
-
-from dotenv import load_dotenv
-
 _ = load_dotenv()
 
-BUSINESS_SERVICE_URL = os.environ.get(
-    "BUSINESS_SERVICE_URL", "http://localhost:8003"
-)
+BUSINESS_SERVICE_URL = os.environ.get("BUSINESS_SERVICE_URL", "http://localhost:8003")
 
 
 async def get_order_summary(order_id: int, user_id: str | None) -> dict | None:
@@ -108,6 +103,40 @@ async def get_order(order_id: int, user_id: str | None) -> dict | None:
             "Business service error",
             user_message=(
                 "I cannot reach the order system right now. Please try again shortly."
+            ),
+        )
+
+    response.raise_for_status()
+    return response.json()
+
+
+async def list_products(
+    limit: int = 10, category: str | None = None
+) -> list[dict]:
+    """List products from the catalog (browse / show all)."""
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            params: dict[str, str | int] = {"limit": limit}
+            if category:
+                params["category"] = category
+            response = await client.get(
+                f"{BUSINESS_SERVICE_URL}/products",
+                params=params,
+                headers=internal_headers(),
+            )
+    except httpx.RequestError as exc:
+        raise ServiceUnavailableError(
+            "Business service unavailable",
+            user_message=(
+                "I cannot load products right now. Please try again shortly."
+            ),
+        ) from exc
+
+    if response.status_code >= 500:
+        raise ServiceUnavailableError(
+            "Business service error",
+            user_message=(
+                "I cannot load products right now. Please try again shortly."
             ),
         )
 

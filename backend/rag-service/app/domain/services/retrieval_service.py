@@ -3,7 +3,9 @@ from app.infrastructure.embeddings.openai_embedding_client import create_embeddi
 from sqlalchemy.orm import Session
 
 
-def retrieve_context(db: Session, question: str, limit: int = 5):
+def retrieve_context(
+    db: Session, question: str, limit: int = 5, document_type: str | None = None
+):
     """
     Converts a user question into an embedding,
     retrieves the closest chunks,
@@ -12,6 +14,11 @@ def retrieve_context(db: Session, question: str, limit: int = 5):
 
     question_embedding = create_embedding(question)
 
-    chunks = retrieve_similar_chunks(db=db, embedding=question_embedding, limit=limit)
+    chunks = retrieve_similar_chunks(
+        db=db,
+        embedding=question_embedding,
+        limit=limit,
+        document_type=document_type,
+    )
 
     return chunks

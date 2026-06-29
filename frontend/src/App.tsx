@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import {
+  clearChatSession,
   clearToken,
   getCurrentUser,
   hasToken,
@@ -40,6 +41,7 @@ export default function App() {
 
   function handleLogout() {
     clearToken();
+    clearChatSession();
     setUser(null);
     setGuestMode(false);
   }

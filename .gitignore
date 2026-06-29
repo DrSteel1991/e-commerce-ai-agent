@@ -20,6 +20,7 @@ env/
 .env
 .env.*
 !.env.example
+.internal_api_key
 
 # Testing & type checking
 .pytest_cache/

@@ -86,3 +86,10 @@ FROM (
     GROUP BY order_id
 ) sub
 WHERE sub.order_id = o.id;
+
+----------------------------------------------------
+-- DEMO: tie order #1 to customer #1 (user1@example.com)
+----------------------------------------------------
+
+UPDATE orders SET customer_id = 1 WHERE id = 1;
+
