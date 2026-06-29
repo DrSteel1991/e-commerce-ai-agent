@@ -1,0 +1,46 @@
+E-Commerce Customer FAQ
+
+Account & Login
+Q: How do I create an account?
+A: Click Sign Up on the homepage and enter your email and password. You can also check out as a guest and create an account later using the same email.
+
+Q: I forgot my password. What should I do?
+A: Use the Forgot Password link on the login page. A reset link will be sent to your email within a few minutes.
+
+Orders
+Q: Can I change or cancel my order after placing it?
+A: Orders can be modified or cancelled within 1 hour of placement if they have not entered processing. After that, cancellation may not be possible once the order has shipped.
+
+Q: How do I track my order?
+A: Log in to your account, open My Orders, and click the order number. You can also use the tracking link in your shipping confirmation email.
+
+Q: My order shows as delivered but I did not receive it.
+A: Check with neighbors, building reception, or the carrier's safe-drop location. Contact us within 48 hours if you still cannot locate the package.
+
+Products
+Q: Are product images accurate?
+A: We aim to show accurate colors and details, but slight variations may occur due to screen settings or manufacturer updates.
+
+Q: Do you restock sold-out items?
+A: Popular items are restocked regularly. Use the Notify Me button on the product page to get an email when it is back in stock.
+
+Q: Do you price match competitors?
+A: We do not offer automatic price matching, but contact support if you find a lower price on an identical item from an authorized retailer within 7 days of purchase.
+
+Returns & Refunds
+Q: How long do I have to return an item?
+A: Most items can be returned within 7 days of delivery. See our Refund & Return Policy for full eligibility rules.
+
+Q: How long until I get my money back?
+A: Refunds are typically processed within 5–10 business days after we receive and inspect the returned item.
+
+Shipping
+Q: How much does shipping cost?
+A: Standard shipping starts at $5.99. Orders over $75 qualify for free standard shipping domestically.
+
+Q: Do you ship internationally?
+A: Yes, to select countries. International shipping rates and delivery times are shown at checkout.
+
+Support
+Q: How do I contact customer support?
+A: Email support@ecommerce-ai-demo.com or use the live chat on our website during business hours (Monday–Friday, 9 AM–6 PM).

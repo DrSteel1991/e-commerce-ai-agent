@@ -1,0 +1,32 @@
+E-Commerce Payment Policy
+
+1. Accepted Payment Methods
+We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, and cash on delivery (COD) for eligible domestic orders. All online payments are processed through PCI-compliant payment providers.
+
+2. Currency
+All prices are displayed and charged in USD unless otherwise noted at checkout. International cards may be charged in your local currency by your bank, and exchange rates are determined by your card issuer.
+
+3. Payment Security
+We do not store full credit card numbers on our servers. Card details are encrypted and handled by our payment processor. Look for the padlock icon in your browser when checking out.
+
+4. Order Authorization
+Your card is authorized at checkout. The final charge is captured when your order ships. If an item is cancelled before shipping, the authorization hold is released within 3–5 business days depending on your bank.
+
+5. Cash on Delivery (COD)
+COD is available for orders under $500 in supported regions. A small COD handling fee may apply. Refused COD deliveries may result in account restrictions for future COD orders.
+
+6. Failed Payments
+If payment fails, your order will not be processed. Common reasons include insufficient funds, incorrect billing address, or bank fraud blocks. Try another payment method or contact your bank.
+
+7. Invoices and Receipts
+A digital receipt is emailed after successful payment. Business customers can request a formal invoice by emailing billing@ecommerce-ai-demo.com with the order number.
+
+8. Refunds to Payment Method
+Approved refunds are returned to the original payment method. PayPal refunds go to your PayPal balance. COD orders refunded to a bank transfer may require you to provide account details.
+
+9. Promotional Codes
+Only one promo code may be used per order unless stated otherwise. Promo codes cannot be applied after checkout. Discounts do not apply to gift cards or shipping fees unless specified.
+
+10. Contact
+Billing questions: billing@ecommerce-ai-demo.com
+Support hours: Monday–Friday, 9:00 AM–6:00 PM
