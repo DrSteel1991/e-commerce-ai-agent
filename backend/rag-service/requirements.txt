@@ -9,3 +9,4 @@ pypdf
 openai
 pgvector
 langchain-text-splitters
+reportlab

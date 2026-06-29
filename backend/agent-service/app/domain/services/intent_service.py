@@ -18,6 +18,42 @@ ORDER_KEYWORDS = [
     "shipping status",
 ]
 
+SHIPPING_POLICY_KEYWORDS = [
+    "shipping policy",
+    "delivery policy",
+    "how long does shipping",
+    "how long does delivery",
+    "free shipping",
+    "express shipping",
+    "international shipping",
+    "delivery time",
+    "when will it arrive",
+    "shipping cost",
+    "shipping fee",
+]
+
+PAYMENT_KEYWORDS = [
+    "payment method",
+    "pay with",
+    "credit card",
+    "paypal",
+    "cash on delivery",
+    "cod",
+    "billing",
+    "invoice",
+    "promo code",
+]
+
+FAQ_KEYWORDS = [
+    "faq",
+    "frequently asked",
+    "how do i create an account",
+    "forgot my password",
+    "price match",
+    "restock",
+    "notify me",
+]
+
 REFUND_KEYWORDS = [
     "refund",
     "return",
@@ -62,6 +98,15 @@ def detect_intent(message: str) -> IntentResult:
 
     if order_id is not None or _contains_any(text, ORDER_KEYWORDS):
         return IntentResult(intent=Intent.ORDER_STATUS, order_id=order_id)
+
+    if _contains_any(text, FAQ_KEYWORDS):
+        return IntentResult(intent=Intent.FAQ)
+
+    if _contains_any(text, SHIPPING_POLICY_KEYWORDS):
+        return IntentResult(intent=Intent.SHIPPING_POLICY)
+
+    if _contains_any(text, PAYMENT_KEYWORDS):
+        return IntentResult(intent=Intent.PAYMENT_POLICY)
 
     if _contains_any(text, REFUND_KEYWORDS):
         return IntentResult(intent=Intent.REFUND_POLICY)

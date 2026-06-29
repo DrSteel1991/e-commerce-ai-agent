@@ -6,5 +6,8 @@ class Intent(str, Enum):
 
     ORDER_STATUS = "order_status"
     REFUND_POLICY = "refund_policy"
+    SHIPPING_POLICY = "shipping_policy"
+    PAYMENT_POLICY = "payment_policy"
+    FAQ = "faq"
     PRODUCT_INFO = "product_info"
     GENERAL = "general"

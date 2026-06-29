@@ -222,7 +222,7 @@ GROUP BY order_id
 WHERE sub.order_id=o.id;
 
 ----------------------------------------------------
--- DOCUMENTS
+-- DOCUMENTS (metadata only — use knowledge_seeder for real chunks + vectors)
 ----------------------------------------------------
 
 INSERT INTO documents
@@ -242,43 +242,6 @@ VALUES
 
 ('product_manual.txt','manual');
 
-----------------------------------------------------
--- DOCUMENT CHUNKS
-----------------------------------------------------
-
-INSERT INTO document_chunks
-(document_id,content)
-
-SELECT
-
-d.id,
-
-chunk
-
-FROM documents d
-
-JOIN LATERAL(
-
-SELECT unnest(ARRAY[
-
-'Customers can request refunds within seven days of delivery.',
-
-'Damaged items must be reported within forty eight hours.',
-
-'Shipping usually takes two to five business days.',
-
-'Refunds are processed within five business days.',
-
-'Orders cannot be cancelled after shipment.',
-
-'Credit cards and cash on delivery are accepted.',
-
-'Products must be returned with original packaging.',
-
-'Warranty duration depends on the supplier.'
-
-]) chunk
-
-)c
-
-ON TRUE;
+-- NOTE: Do not insert fake document_chunks here.
+-- Run: cd backend/rag-service && python -m app.scripts.generate_policy_pdfs
+--      python -m app.seeders.knowledge_seeder

@@ -17,7 +17,22 @@ async def handle_message(message: str, user_id: str | None = None) -> dict:
         return await _handle_order_status(intent_result, user_id)
 
     if intent_result.intent == Intent.REFUND_POLICY:
-        return await _handle_refund_policy(message, user_id)
+        return await _handle_knowledge_base(
+            message, user_id, Intent.REFUND_POLICY, "used_rag_refund_policy"
+        )
+
+    if intent_result.intent == Intent.SHIPPING_POLICY:
+        return await _handle_knowledge_base(
+            message, user_id, Intent.SHIPPING_POLICY, "used_rag_shipping_policy"
+        )
+
+    if intent_result.intent == Intent.PAYMENT_POLICY:
+        return await _handle_knowledge_base(
+            message, user_id, Intent.PAYMENT_POLICY, "used_rag_payment_policy"
+        )
+
+    if intent_result.intent == Intent.FAQ:
+        return await _handle_knowledge_base(message, user_id, Intent.FAQ, "used_rag_faq")
 
     if intent_result.intent == Intent.PRODUCT_INFO:
         return await _handle_product_info(message, user_id)
@@ -62,16 +77,19 @@ async def _handle_order_status(
     }
 
 
-async def _handle_refund_policy(message: str, user_id: str | None) -> dict:
+async def _handle_knowledge_base(
+    message: str, user_id: str | None, intent: Intent, agent_action: str
+) -> dict:
     rag_response = await ask_rag_service(message)
 
     return {
         "answer": rag_response.get("answer"),
         "sources": rag_response.get("sources", []),
-        "agent_action": "used_rag",
-        "intent": Intent.REFUND_POLICY.value,
+        "agent_action": agent_action,
+        "intent": intent.value,
         "user_id": user_id,
     }
+
 
 
 async def _handle_product_info(message: str, user_id: str | None) -> dict:
@@ -103,12 +121,6 @@ async def _handle_product_info(message: str, user_id: str | None) -> dict:
 
 
 async def _handle_general(message: str, user_id: str | None) -> dict:
-    rag_response = await ask_rag_service(message)
-
-    return {
-        "answer": rag_response.get("answer"),
-        "sources": rag_response.get("sources", []),
-        "agent_action": "used_rag",
-        "intent": Intent.GENERAL.value,
-        "user_id": user_id,
-    }
+    return await _handle_knowledge_base(
+        message, user_id, Intent.GENERAL, "used_rag_general"
+    )

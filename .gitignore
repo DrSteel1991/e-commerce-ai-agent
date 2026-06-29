@@ -54,3 +54,7 @@ postgres_data/
 # AI / vector stores (generated at runtime)
 data/chroma/
 *.faiss
+
+# Node / frontend
+node_modules/
+frontend/dist/
