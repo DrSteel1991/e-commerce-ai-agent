@@ -3,7 +3,7 @@ import { sendChatMessage } from "../api/client";
 import type { ChatMessage } from "../types";
 
 interface ChatProps {
-  userId?: string;
+  isLoggedIn: boolean;
 }
 
 const STARTER_PROMPTS = [
@@ -14,7 +14,7 @@ const STARTER_PROMPTS = [
   "How do I track my order?",
 ];
 
-export function Chat({ userId }: ChatProps) {
+export function Chat({ isLoggedIn }: ChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome",
@@ -49,7 +49,7 @@ export function Chat({ userId }: ChatProps) {
     setLoading(true);
 
     try {
-      const response = await sendChatMessage(trimmed, userId);
+      const response = await sendChatMessage(trimmed);
 
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
@@ -73,6 +73,13 @@ export function Chat({ userId }: ChatProps) {
   return (
     <div className="chat-layout">
       <div className="card chat-panel">
+        {!isLoggedIn && (
+          <p className="muted guest-note">
+            Sign in to check order status. Policy and product questions work as a
+            guest.
+          </p>
+        )}
+
         <div className="messages">
           {messages.map((message) => (
             <div

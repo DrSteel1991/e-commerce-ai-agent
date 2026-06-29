@@ -67,7 +67,7 @@ export default function App() {
           }}
         />
       ) : (
-        <Chat userId={user?.id} />
+        <Chat isLoggedIn={Boolean(user)} />
       )}
     </main>
   );

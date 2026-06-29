@@ -1,6 +1,6 @@
 from app.domain.services.rag_service import answer_question
 from app.infrastructure.database.database import get_db
-from app.schemas.rag_schemas import AskRequest, AskResponse
+from ecommerce_contracts import AskRequest, AskResponse
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 

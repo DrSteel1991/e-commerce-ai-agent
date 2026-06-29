@@ -14,7 +14,7 @@ SERVICES=(
 
 mkdir -p "$LOG_DIR"
 
-ensure_venv() {
+  ensure_venv() {
   local service_dir="$1"
   local full_path="$ROOT/$service_dir"
 
@@ -24,6 +24,7 @@ ensure_venv() {
   fi
 
   echo "Installing dependencies for $service_dir..."
+  "$full_path/.venv/bin/pip" install -q -e "$ROOT/backend/packages/contracts"
   "$full_path/.venv/bin/pip" install -q -r "$full_path/requirements.txt"
 }
 

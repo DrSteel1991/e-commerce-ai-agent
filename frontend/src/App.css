@@ -115,6 +115,11 @@ button:disabled {
   padding: 1rem;
 }
 
+.guest-note {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}
+
 .messages {
   overflow-y: auto;
   display: flex;

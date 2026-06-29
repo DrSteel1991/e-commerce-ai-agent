@@ -1,15 +1,10 @@
 import httpx
+from ecommerce_contracts import LoginRequest
 from fastapi import APIRouter, Header, HTTPException
-from pydantic import BaseModel, EmailStr
 
 from app.services.auth_client import get_current_user, login
 
 router = APIRouter()
-
-
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str
 
 
 @router.post("/login")

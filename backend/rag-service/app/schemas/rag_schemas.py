@@ -1,18 +1,3 @@
-from pydantic import BaseModel
+from ecommerce_contracts.rag import AskRequest, AskResponse, SourceResponse
 
-
-class AskRequest(BaseModel):
-    question: str
-
-
-class SourceResponse(BaseModel):
-    chunk_id: int
-    filename: str
-    distance: float
-    preview: str
-
-
-class AskResponse(BaseModel):
-    question: str
-    answer: str
-    sources: list[SourceResponse]
+__all__ = ["AskRequest", "AskResponse", "SourceResponse"]

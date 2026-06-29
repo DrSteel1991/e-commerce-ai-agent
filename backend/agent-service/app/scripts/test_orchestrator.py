@@ -18,7 +18,10 @@ async def main():
     print("  RAG Service      → port 8002\n")
 
     for message in test_messages:
-        result = await handle_message(message, user_id="demo-user")
+        result = await handle_message(
+            message,
+            user_id="00000000-0000-4000-8000-000000000001",
+        )
 
         print(f"Message: {message}")
         print(f"  Intent:  {result['intent']}")

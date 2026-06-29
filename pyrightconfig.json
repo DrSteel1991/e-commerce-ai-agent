@@ -3,31 +3,36 @@
     {
       "root": "backend/auth-service",
       "extraPaths": [
-        "backend/auth-service/.venv/lib/python3.14/site-packages"
+        "backend/auth-service/.venv/lib/python3.14/site-packages",
+        "backend/packages/contracts/src"
       ]
     },
     {
       "root": "backend/business-service",
       "extraPaths": [
-        "backend/business-service/.venv/lib/python3.14/site-packages"
+        "backend/business-service/.venv/lib/python3.14/site-packages",
+        "backend/packages/contracts/src"
       ]
     },
     {
       "root": "backend/rag-service",
       "extraPaths": [
-        "backend/rag-service/.venv/lib/python3.14/site-packages"
+        "backend/rag-service/.venv/lib/python3.14/site-packages",
+        "backend/packages/contracts/src"
       ]
     },
     {
       "root": "backend/api-gateway",
       "extraPaths": [
-        "backend/api-gateway/.venv/lib/python3.14/site-packages"
+        "backend/api-gateway/.venv/lib/python3.14/site-packages",
+        "backend/packages/contracts/src"
       ]
     },
     {
       "root": "backend/agent-service",
       "extraPaths": [
-        "backend/agent-service/.venv/lib/python3.14/site-packages"
+        "backend/agent-service/.venv/lib/python3.14/site-packages",
+        "backend/packages/contracts/src"
       ]
     }
   ]

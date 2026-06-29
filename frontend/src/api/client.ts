@@ -51,16 +51,10 @@ export async function getCurrentUser(): Promise<User> {
   return apiFetch<User>("/api/auth/me");
 }
 
-export async function sendChatMessage(
-  message: string,
-  userId?: string,
-): Promise<ChatResponse> {
+export async function sendChatMessage(message: string): Promise<ChatResponse> {
   return apiFetch<ChatResponse>("/api/chat", {
     method: "POST",
-    body: JSON.stringify({
-      message,
-      user_id: userId ?? null,
-    }),
+    body: JSON.stringify({ message }),
   });
 }
 

@@ -1,19 +1,15 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+from ecommerce_contracts import USER_ID_HEADER, ChatRequest, require_internal_api_key
+from fastapi import APIRouter, Depends, Header
 
 from app.domain.services.agent_orchestrator import handle_message
 
 router = APIRouter()
 
 
-class AgentChatRequest(BaseModel):
-    message: str
-    user_id: str | None = None
-
-
 @router.post("/chat")
-async def chat(request: AgentChatRequest):
-    return await handle_message(
-        message=request.message,
-        user_id=request.user_id,
-    )
+async def chat(
+    request: ChatRequest,
+    _: None = Depends(require_internal_api_key),
+    user_id: str | None = Header(None, alias=USER_ID_HEADER),
+):
+    return await handle_message(message=request.message, user_id=user_id)

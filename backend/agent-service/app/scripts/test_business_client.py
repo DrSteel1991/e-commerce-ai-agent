@@ -2,6 +2,9 @@ import asyncio
 
 from app.services.business_client import get_order, get_order_summary
 
+# Deterministic user1 ID from database/auth_db/seed.sql
+USER1_ID = "00000000-0000-4000-8000-000000000001"
+
 
 async def main():
     test_order_ids = [1, 99999]
@@ -14,7 +17,7 @@ async def main():
     for order_id in test_order_ids:
         print(f"--- Order {order_id} ---")
 
-        summary = await get_order_summary(order_id)
+        summary = await get_order_summary(order_id, USER1_ID)
 
         if summary is None:
             print("  Summary: not found")
@@ -22,7 +25,7 @@ async def main():
             print(f"  Status:  {summary['status']}")
             print(f"  Message: {summary['message']}")
 
-        order = await get_order(order_id)
+        order = await get_order(order_id, USER1_ID)
 
         if order is None:
             print("  Raw order: not found")

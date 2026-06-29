@@ -2,6 +2,7 @@ import os
 
 import httpx
 from dotenv import load_dotenv
+from ecommerce_contracts import internal_headers
 
 _ = load_dotenv()
 
@@ -9,15 +10,13 @@ AGENT_SERVICE_URL = os.environ.get("AGENT_SERVICE_URL", "http://localhost:8004")
 
 
 async def send_message_to_agent(message: str, user_id: str | None = None) -> dict:
-    payload = {
-        "message": message,
-        "user_id": user_id,
-    }
+    payload = {"message": message}
 
     async with httpx.AsyncClient(timeout=60.0) as client:
         response = await client.post(
             f"{AGENT_SERVICE_URL}/agent/chat",
             json=payload,
+            headers=internal_headers(user_id=user_id),
         )
 
     response.raise_for_status()

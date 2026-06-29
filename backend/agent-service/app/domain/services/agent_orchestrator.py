@@ -2,6 +2,7 @@ from app.domain.intents import Intent
 from app.domain.services.intent_service import IntentResult, detect_intent
 from app.services.business_client import get_order_summary, search_products
 from app.services.rag_client import ask_rag_service
+from ecommerce_contracts.errors import ServiceError
 
 
 async def handle_message(message: str, user_id: str | None = None) -> dict:
@@ -13,31 +14,42 @@ async def handle_message(message: str, user_id: str | None = None) -> dict:
     """
     intent_result = detect_intent(message)
 
-    if intent_result.intent == Intent.ORDER_STATUS:
-        return await _handle_order_status(intent_result, user_id)
+    try:
+        if intent_result.intent == Intent.ORDER_STATUS:
+            return await _handle_order_status(intent_result, user_id)
 
-    if intent_result.intent == Intent.REFUND_POLICY:
-        return await _handle_knowledge_base(
-            message, user_id, Intent.REFUND_POLICY, "used_rag_refund_policy"
-        )
+        if intent_result.intent == Intent.REFUND_POLICY:
+            return await _handle_knowledge_base(
+                message, user_id, Intent.REFUND_POLICY, "used_rag_refund_policy"
+            )
 
-    if intent_result.intent == Intent.SHIPPING_POLICY:
-        return await _handle_knowledge_base(
-            message, user_id, Intent.SHIPPING_POLICY, "used_rag_shipping_policy"
-        )
+        if intent_result.intent == Intent.SHIPPING_POLICY:
+            return await _handle_knowledge_base(
+                message, user_id, Intent.SHIPPING_POLICY, "used_rag_shipping_policy"
+            )
 
-    if intent_result.intent == Intent.PAYMENT_POLICY:
-        return await _handle_knowledge_base(
-            message, user_id, Intent.PAYMENT_POLICY, "used_rag_payment_policy"
-        )
+        if intent_result.intent == Intent.PAYMENT_POLICY:
+            return await _handle_knowledge_base(
+                message, user_id, Intent.PAYMENT_POLICY, "used_rag_payment_policy"
+            )
 
-    if intent_result.intent == Intent.FAQ:
-        return await _handle_knowledge_base(message, user_id, Intent.FAQ, "used_rag_faq")
+        if intent_result.intent == Intent.FAQ:
+            return await _handle_knowledge_base(
+                message, user_id, Intent.FAQ, "used_rag_faq"
+            )
 
-    if intent_result.intent == Intent.PRODUCT_INFO:
-        return await _handle_product_info(message, user_id)
+        if intent_result.intent == Intent.PRODUCT_INFO:
+            return await _handle_product_info(message, user_id)
 
-    return await _handle_general(message, user_id)
+        return await _handle_general(message, user_id)
+    except ServiceError as exc:
+        return {
+            "answer": exc.user_message,
+            "sources": [],
+            "agent_action": "service_error",
+            "intent": intent_result.intent.value,
+            "user_id": user_id,
+        }
 
 
 async def _handle_order_status(
@@ -55,7 +67,16 @@ async def _handle_order_status(
             "user_id": user_id,
         }
 
-    summary = await get_order_summary(intent_result.order_id)
+    if user_id is None:
+        return {
+            "answer": "Please sign in to check your order status.",
+            "sources": [],
+            "agent_action": "auth_required",
+            "intent": Intent.ORDER_STATUS.value,
+            "user_id": user_id,
+        }
+
+    summary = await get_order_summary(intent_result.order_id, user_id)
 
     if summary is None:
         return {
@@ -89,7 +110,6 @@ async def _handle_knowledge_base(
         "intent": intent.value,
         "user_id": user_id,
     }
-
 
 
 async def _handle_product_info(message: str, user_id: str | None) -> dict:

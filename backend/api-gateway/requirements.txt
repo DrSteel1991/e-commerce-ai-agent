@@ -3,3 +3,4 @@ uvicorn
 httpx
 python-dotenv
 email-validator
+-e ../packages/contracts

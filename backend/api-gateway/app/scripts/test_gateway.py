@@ -1,17 +1,10 @@
-"""
-Quick manual test for the API Gateway.
-
-Usage:
-  1. Start Auth Service on port 8001
-  2. Start Agent Service on port 8004
-  3. Start Business + RAG if testing chat with orders/refunds
-  4. Start API Gateway on port 8000
-  5. Run: python -m app.scripts.test_gateway
-"""
-
 import asyncio
+import os
 
 import httpx
+from dotenv import load_dotenv
+
+load_dotenv()
 
 GATEWAY_URL = "http://localhost:8000"
 
@@ -23,20 +16,43 @@ async def main():
         print(response.json())
         print()
 
-        print("2. Chat (no login required for now)")
+        print("2. Chat as guest (policy questions work)")
         response = await client.post(
             f"{GATEWAY_URL}/api/chat",
-            json={
-                "message": "Where is my order #1?",
-                "user_id": "demo-user",
-            },
+            json={"message": "What is your refund policy?"},
         )
         print(response.status_code, response.json())
         print()
 
-        print("3. Login")
-        print("   Use a real user from your database, e.g. user1@example.com")
-        print("   Skip this step if you have not set a real password hash yet.")
+        print("3. Chat order lookup without login (should ask to sign in)")
+        response = await client.post(
+            f"{GATEWAY_URL}/api/chat",
+            json={"message": "Where is my order #1?"},
+        )
+        print(response.status_code, response.json())
+        print()
+
+        print("4. Login + order lookup with JWT")
+        print("   Use a user with a real bcrypt password hash.")
+        email = os.environ.get("TEST_USER_EMAIL", "user1@example.com")
+        password = os.environ.get("TEST_USER_PASSWORD", "")
+
+        if not password:
+            print("   Skipped — set TEST_USER_PASSWORD to run authenticated test.")
+            return
+
+        login_response = await client.post(
+            f"{GATEWAY_URL}/api/auth/login",
+            json={"email": email, "password": password},
+        )
+        token = login_response.json()["access_token"]
+
+        response = await client.post(
+            f"{GATEWAY_URL}/api/chat",
+            json={"message": "Where is my order #1?"},
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        print(response.status_code, response.json())
 
 
 if __name__ == "__main__":

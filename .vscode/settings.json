@@ -1,23 +1,12 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/auth-service/.venv/bin/python",
   "python.terminal.activateEnvironment": true,
   "python.analysis.diagnosticMode": "workspace",
   "python.analysis.extraPaths": [
-    "${workspaceFolder}/backend/auth-service/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/business-service/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/rag-service/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/api-gateway/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/agent-service/.venv/lib/python3.14/site-packages"
+    "${workspaceFolder}/backend/packages/contracts/src"
   ],
   "basedpyright.analysis.diagnosticMode": "workspace",
-  "basedpyright.venvPath": "${workspaceFolder}/backend/auth-service",
-  "basedpyright.venv": ".venv",
   "basedpyright.analysis.extraPaths": [
-    "${workspaceFolder}/backend/auth-service/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/business-service/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/rag-service/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/api-gateway/.venv/lib/python3.14/site-packages",
-    "${workspaceFolder}/backend/agent-service/.venv/lib/python3.14/site-packages"
+    "${workspaceFolder}/backend/packages/contracts/src"
   ],
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",

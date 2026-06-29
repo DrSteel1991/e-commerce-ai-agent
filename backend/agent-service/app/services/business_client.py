@@ -1,6 +1,14 @@
+import httpx
+from ecommerce_contracts import internal_headers
+from ecommerce_contracts.errors import (
+    ServiceError,
+    ServiceForbiddenError,
+    ServiceNotFoundError,
+    ServiceUnavailableError,
+)
+
 import os
 
-import httpx
 from dotenv import load_dotenv
 
 _ = load_dotenv()
@@ -10,31 +18,98 @@ BUSINESS_SERVICE_URL = os.environ.get(
 )
 
 
-async def get_order_summary(order_id: int) -> dict | None:
+async def get_order_summary(order_id: int, user_id: str | None) -> dict | None:
     """
     Ask the Business Service for a human-friendly order summary.
 
     Returns None if the order does not exist.
+    Raises ServiceError subclasses for auth, access, and availability issues.
     """
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.get(
-            f"{BUSINESS_SERVICE_URL}/orders/{order_id}/summary"
+    if user_id is None:
+        raise ServiceForbiddenError(
+            "Authentication required",
+            user_message="Please sign in to check your order status.",
         )
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{BUSINESS_SERVICE_URL}/orders/{order_id}/summary",
+                headers=internal_headers(user_id=user_id),
+            )
+    except httpx.RequestError as exc:
+        raise ServiceUnavailableError(
+            "Business service unavailable",
+            user_message=(
+                "I cannot reach the order system right now. Please try again shortly."
+            ),
+        ) from exc
 
     if response.status_code == 404:
         return None
+
+    if response.status_code == 403:
+        raise ServiceForbiddenError(
+            "Order access denied",
+            user_message="You do not have access to that order.",
+        )
+
+    if response.status_code == 401:
+        raise ServiceForbiddenError(
+            "Authentication required",
+            user_message="Please sign in to check your order status.",
+        )
+
+    if response.status_code >= 500:
+        raise ServiceUnavailableError(
+            "Business service error",
+            user_message=(
+                "I cannot reach the order system right now. Please try again shortly."
+            ),
+        )
 
     response.raise_for_status()
     return response.json()
 
 
-async def get_order(order_id: int) -> dict | None:
+async def get_order(order_id: int, user_id: str | None) -> dict | None:
     """Fetch raw order data from the Business Service."""
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.get(f"{BUSINESS_SERVICE_URL}/orders/{order_id}")
+    if user_id is None:
+        raise ServiceForbiddenError(
+            "Authentication required",
+            user_message="Please sign in to view order details.",
+        )
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{BUSINESS_SERVICE_URL}/orders/{order_id}",
+                headers=internal_headers(user_id=user_id),
+            )
+    except httpx.RequestError as exc:
+        raise ServiceUnavailableError(
+            "Business service unavailable",
+            user_message=(
+                "I cannot reach the order system right now. Please try again shortly."
+            ),
+        ) from exc
 
     if response.status_code == 404:
         return None
+
+    if response.status_code == 403:
+        raise ServiceForbiddenError(
+            "Order access denied",
+            user_message="You do not have access to that order.",
+        )
+
+    if response.status_code >= 500:
+        raise ServiceUnavailableError(
+            "Business service error",
+            user_message=(
+                "I cannot reach the order system right now. Please try again shortly."
+            ),
+        )
 
     response.raise_for_status()
     return response.json()
@@ -42,10 +117,27 @@ async def get_order(order_id: int) -> dict | None:
 
 async def search_products(query: str, limit: int = 5) -> list[dict]:
     """Search products in the Business Service."""
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.get(
-            f"{BUSINESS_SERVICE_URL}/products/search",
-            params={"query": query, "limit": limit},
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{BUSINESS_SERVICE_URL}/products/search",
+                params={"query": query, "limit": limit},
+                headers=internal_headers(),
+            )
+    except httpx.RequestError as exc:
+        raise ServiceUnavailableError(
+            "Business service unavailable",
+            user_message=(
+                "I cannot search products right now. Please try again shortly."
+            ),
+        ) from exc
+
+    if response.status_code >= 500:
+        raise ServiceUnavailableError(
+            "Business service error",
+            user_message=(
+                "I cannot search products right now. Please try again shortly."
+            ),
         )
 
     response.raise_for_status()
