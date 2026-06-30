@@ -1,4 +1,3 @@
-import json
 import os
 from collections.abc import Iterable
 
@@ -24,29 +23,6 @@ def get_client() -> OpenAI:
     return _client
 
 
-def chat_completion(
-    messages: list[dict[str, str]],
-    *,
-    temperature: float = 0,
-    json_mode: bool = False,
-) -> str:
-    kwargs: dict = {
-        "model": OPENAI_MODEL,
-        "messages": messages,
-        "temperature": temperature,
-    }
-    if json_mode:
-        kwargs["response_format"] = {"type": "json_object"}
-
-    response = get_client().chat.completions.create(**kwargs)
-
-    content = response.choices[0].message.content
-    if content is None:
-        raise RuntimeError("OpenAI returned empty content")
-
-    return content
-
-
 def chat_completion_with_tools(
     messages: Iterable[ChatCompletionMessageParam],
     tools: Iterable[ChatCompletionToolParam],
@@ -61,8 +37,3 @@ def chat_completion_with_tools(
         temperature=temperature,
     )
     return response.choices[0].message
-
-
-def chat_completion_json(messages: list[dict[str, str]]) -> dict:
-    content = chat_completion(messages, json_mode=True)
-    return json.loads(content)

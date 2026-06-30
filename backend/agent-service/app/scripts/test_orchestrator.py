@@ -13,6 +13,7 @@ async def main():
     ]
 
     print("Agent orchestrator test\n")
+    print("Requires OPENAI_API_KEY in backend/agent-service/.env")
     print("Make sure these services are running:")
     print("  Business Service → port 8003")
     print("  RAG Service      → port 8002\n")

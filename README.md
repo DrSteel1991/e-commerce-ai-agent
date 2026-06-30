@@ -39,7 +39,7 @@ flowchart LR
 | **Auth** | Login, JWT, `/me`, bcrypt passwords | FastAPI, SQLAlchemy 2.0, `bcrypt`, `python-jose`, PostgreSQL |
 | **Business** | Product list/search, order lookup, order ownership | FastAPI, SQLAlchemy 2.0, PostgreSQL |
 | **RAG** | PDF → chunks → OpenAI embeddings → pgvector retrieval → LLM answer | FastAPI, `pypdf`, `openai`, `pgvector`, `langchain-text-splitters`, PostgreSQL |
-| **Agent** | LangGraph tool-calling loop + legacy intent router fallback | FastAPI, `httpx`, `openai`, `langgraph` |
+| **Agent** | LangGraph tool-calling agent | FastAPI, `httpx`, `openai`, `langgraph` |
 | **API Gateway** | Proxies `/api/auth/*` and `/api/chat` | FastAPI, `httpx`, CORS |
 | **Contracts** | Shared Pydantic models + internal API key helpers | `pydantic`, `fastapi` (in `backend/packages/contracts`) |
 
@@ -56,7 +56,7 @@ flowchart LR
 
 ### Phase 3 — Tool-calling agent (LangGraph)
 
-When `OPENAI_API_KEY` is set, the agent uses **LLM tool calling** instead of a large `if/else` intent router:
+The agent uses **LLM tool calling** (requires `OPENAI_API_KEY` in agent-service):
 
 ```
 User message → LLM picks tool → run tool → LLM picks again or answers
@@ -71,8 +71,6 @@ User message → LLM picks tool → run tool → LLM picks again or answers
 | `search_products_semantic` | Meaning-based product search via RAG embeddings |
 | `get_order_status` | Order tracking (requires login) |
 | `search_knowledge_base` | Refunds, shipping, payments, warranties, FAQs |
-
-Set `AGENT_MODE=legacy` in `backend/agent-service/.env` to force the older keyword-based router.
 
 ### Knowledge base (RAG documents)
 
@@ -215,7 +213,7 @@ make setup
 | auth-service | `DATABASE_URL`, `JWT_SECRET_KEY` |
 | business-service | `DATABASE_URL`, `INTERNAL_SERVICE_API_KEY` |
 | rag-service | `DATABASE_URL`, `OPENAI_API_KEY`, `INTERNAL_SERVICE_API_KEY` |
-| agent-service | `RAG_SERVICE_URL`, `BUSINESS_SERVICE_URL`, `INTERNAL_SERVICE_API_KEY`, `OPENAI_API_KEY` (for tool agent) |
+| agent-service | `RAG_SERVICE_URL`, `BUSINESS_SERVICE_URL`, `INTERNAL_SERVICE_API_KEY`, `OPENAI_API_KEY` |
 | api-gateway | `AUTH_SERVICE_URL`, `AGENT_SERVICE_URL`, `INTERNAL_SERVICE_API_KEY` |
 | frontend | `VITE_API_URL=` (empty uses Vite proxy to gateway) |
 
@@ -223,9 +221,8 @@ Agent-specific options:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `AGENT_MODE` | `tool_calling` | Set to `legacy` for keyword router only |
 | `AGENT_MAX_TOOL_ITERATIONS` | `5` | Max tool-call rounds per message |
-| `OPENAI_MODEL` | `gpt-4o-mini` | Model for agent and synthesis |
+| `OPENAI_MODEL` | `gpt-4o-mini` | Model for the tool-calling agent |
 | `CONVERSATION_MAX_MESSAGES` | `20` | In-memory session history limit |
 
 Example database URLs (adjust user/password/host to your setup):
